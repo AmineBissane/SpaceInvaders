@@ -1,10 +1,13 @@
 package com.spaceinvaders.spaceinvaders;
 
 import javafx.scene.paint.Color;
+
+import java.io.Serializable;
+
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 // Star
-public class Universe {
+public class Universe implements Serializable {
     int posX, posY;
     private int h, w, r, g, b;
     private double opacity;

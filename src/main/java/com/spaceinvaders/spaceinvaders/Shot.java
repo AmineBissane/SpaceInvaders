@@ -1,10 +1,13 @@
 package com.spaceinvaders.spaceinvaders;
 
 import javafx.scene.paint.Color;
+
+import java.io.Serializable;
+
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 // Bullet
-public class Shot {
+public class Shot implements Serializable {
 
     public boolean toRemove;
     int posX, posY, speed = 10;

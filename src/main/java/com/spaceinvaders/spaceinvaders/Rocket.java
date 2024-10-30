@@ -1,9 +1,11 @@
 package com.spaceinvaders.spaceinvaders;
 
+import java.io.Serializable;
+
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 // Player
-public class Rocket {
+public class Rocket implements Serializable {
     int score;
     int posX, posY, size;
     boolean exploding, destroyed;
