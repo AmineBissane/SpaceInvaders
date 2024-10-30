@@ -27,7 +27,7 @@ public class menu {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("savegame.dat"));
             String line = reader.readLine();
-            score = Integer.parseInt(line);
+            player.score = Integer.parseInt(line);
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();

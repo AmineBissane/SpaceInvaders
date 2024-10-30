@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
@@ -89,36 +90,38 @@ public class SpaceInvaders extends Application {
 
 		scene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.SPACE) {
-				openmenu(stage);
+				openMenu(stage);
 			}
 		});
 	}
-	public void openmenu(Window stage) {
-		// Create a new FXMLLoader instance to load the FXML file
+	public void openMenu(Window stage) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
 		Stage menuStage = new Stage();
-
+		Scene scene = null;
 		try {
-			menuStage.setScene(new Scene(loader.load()));
+			scene = new Scene(loader.load());
 		} catch (IOException e) {
-			e.printStackTrace();
-			return; // Exit if loading fails
+			throw new RuntimeException(e);
 		}
-
-		// Set the title of the stage
+		scene.setFill(Color.TRANSPARENT);
+		menuStage.setScene(scene);
+		menuStage.initStyle(StageStyle.TRANSPARENT);
 		menuStage.setTitle("Game Menu");
+		menuStage.setWidth(820);
+		menuStage.setHeight(640);
+		pauseGame();
+		menuStage.setOnHidden(e -> resumeGame());
 		menuStage.show();
 	}
 
-	private void pauseGame(Stage stage) {
+	private void pauseGame() {
 		isGamePaused = true;
-		System.out.println("Game paused.");
+		System.out.println("Game paused");
 	}
 
 	private void resumeGame() {
-		isGamePaused = false; // Set the game to resumed state
+		isGamePaused = false;
 		System.out.println("Game resumed.");
-		// You might want to add additional logic here, like resuming animations or sounds.
 	}
 
 
@@ -136,8 +139,11 @@ public class SpaceInvaders extends Application {
 		IntStream.range(0, MAX_BOMBS).mapToObj(i -> this.newBomb()).forEach(Bombs::add);
 	}
 
-	// Run graphics
 	private void run(GraphicsContext gc) {
+		if (isGamePaused) {
+			return;
+		}
+
 		gc.setFill(Color.grayRgb(20));
 		gc.fillRect(0, 0, WIDTH, HEIGHT);
 		gc.setTextAlign(TextAlignment.CENTER);
@@ -149,8 +155,9 @@ public class SpaceInvaders extends Application {
 			gc.setFont(Font.font(35));
 			gc.setFill(Color.YELLOW);
 			gc.fillText("Game Over \n Your Score is: " + player.score + " \n Click to play again", WIDTH / 2, HEIGHT / 2.5);
-			// return;
+			return;
 		}
+
 		univ.forEach(Universe::draw);
 		player.update();
 		player.draw();
@@ -194,6 +201,7 @@ public class SpaceInvaders extends Application {
 				univ.remove(i);
 		}
 	}
+
 
 	private Bomb newBomb() {
 		return new Bomb(50 + RAND.nextInt(WIDTH - 100), 0, PLAYER_SIZE, RAND.nextInt(BOMBS_IMG.length));
