@@ -3,6 +3,8 @@ package com.spaceinvaders.spaceinvaders;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -29,6 +31,11 @@ public class menu {
     }
 
     public void save(ActionEvent event) throws Exception {
+
+
+
+
+
         String dataToSave = player.score + "," + player.posX + "," + player.posY + "," +
                 player.size + "," + player.explosionStep + "," + player.imgIndex + "," + player.destroyed;
 
@@ -114,5 +121,34 @@ public class menu {
         }
     }
 
+    public void saveas(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("saveFile.fxml"));
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(loader.load()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("save as :");
+        stage.show();
+
+        stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
+    public void loadas(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loadsave.fxml"));
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(loader.load()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("load saves !");
+        stage.show();
+
+        stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
 }
 

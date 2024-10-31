@@ -10,6 +10,8 @@
   </padding>
   <Button onAction="#continuee" text="continue" />
    <Button mnemonicParsing="false" onAction="#save" text="   save   " />
-   <Button mnemonicParsing="false" text="LoadSave" onAction="#loadsave" />
+   <Button mnemonicParsing="false" onAction="#loadsave" text="LoadSave" />
    <Button mnemonicParsing="false" onAction="#close" text="    close   " />
+   <Button mnemonicParsing="false" onAction="#saveas" text="saveas" />
+   <Button mnemonicParsing="false" text="LoadSaveas" onAction="#loadas" />
 </VBox>
