@@ -27,8 +27,15 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class SpaceInvaders extends Application {
+	private static SpaceInvaders instance;
 
-	// Variables
+	public SpaceInvaders() {
+		instance = this;
+	}
+
+	public static SpaceInvaders getInstance() {
+		return instance;
+	}
 	static final Random RAND = new Random();
 	static final int WIDTH = 800;
 	static final int HEIGHT = 600;
@@ -114,12 +121,12 @@ public class SpaceInvaders extends Application {
 		menuStage.show();
 	}
 
-	private void pauseGame() {
+	public void pauseGame() {
 		isGamePaused = true;
 		System.out.println("Game paused");
 	}
 
-	private void resumeGame() {
+	public void resumeGame() {
 		isGamePaused = false;
 		System.out.println("Game resumed.");
 	}

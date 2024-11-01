@@ -24,22 +24,20 @@ import static com.spaceinvaders.spaceinvaders.SpaceInvaders.HEIGHT;
 public class LoadSave {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES";
-    String key = "1234567890123456"; // Ensure this key is securely stored and managed
+    String key = "1234567890123456";
     @FXML
-    public ListView<String> listView; // ListView for displaying saved files
+    public ListView<String> listView;
 
     @FXML
-    public Button loadButton; // Button to load the selected file
+    public Button loadButton;
 
-    // Initialize method to load file names into ListView
     @FXML
     public void initialize() {
         loadFileNames();
     }
 
-    // Load all .dat files from the specified directory into the ListView
     private void loadFileNames() {
-        File directory = new File("src/saves/"); // Path to the saves directory
+        File directory = new File("src/saves/");
         if (directory.exists() && directory.isDirectory()) {
             File[] files = directory.listFiles();
             if (files != null) {
@@ -58,12 +56,12 @@ public class LoadSave {
     public void loadsavefile(ActionEvent event) {
         String selectedFile = listView.getSelectionModel().getSelectedItem();
         try {
-            decrypt(key, "src/saves/"+selectedFile, "src/saves/"+selectedFile);
+            decrypt(key, "src/saves/"+selectedFile, "decrypted.dat");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("src/saves/"+selectedFile));
+            BufferedReader reader = new BufferedReader(new FileReader("decrypted.dat"));
             String line = reader.readLine();
             String[] data = line.split(",");
             player.score = Integer.parseInt(data[0]);
@@ -79,8 +77,9 @@ public class LoadSave {
         }
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.close();
-        File file = new File("decrypted_savegame.dat");
+        File file = new File("decrypted.dat");
         file.delete();
+        SpaceInvaders.getInstance().resumeGame();
     }
 
 
@@ -93,6 +92,7 @@ public class LoadSave {
         SecretKey secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(cipherMode, secretKey);
+        System.out.println("Cipher initialized with key and mode.");
 
         try (FileInputStream inputStream = new FileInputStream(inputFile);
              FileOutputStream outputStream = new FileOutputStream(outputFile);
@@ -100,9 +100,15 @@ public class LoadSave {
 
             byte[] buffer = new byte[1024];
             int bytesRead;
+            boolean dataWritten = false;
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 cipherOutputStream.write(buffer, 0, bytesRead);
+                dataWritten = true;
+            }
+
+            if (!dataWritten) {
+                System.out.println("No data was written to the decrypted file.");
             }
         }
 
@@ -113,7 +119,6 @@ public class LoadSave {
             System.out.println("Output file is empty or not created.");
         }
     }
-
 
 }
 

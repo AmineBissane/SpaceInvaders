@@ -27,7 +27,7 @@ public class SaveFile {
         String dataToSave = player.score + "," + player.posX + "," + player.posY + "," +
                 player.size + "," + player.explosionStep + "," + player.imgIndex + "," + player.destroyed;
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/saves/"+filename+".dat"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("savegame.dat"))) {
             writer.write(dataToSave);
             System.out.println("Data written to savegame.dat: " + dataToSave);
         } catch (IOException e) {
@@ -36,7 +36,7 @@ public class SaveFile {
             return;
         }
         try {
-            encrypt(key, "src/saves/"+filename+".dat", "src/saves/"+filename+".dat");
+            encrypt(key, "savegame.dat", "src/saves/"+filename+".dat");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -48,6 +48,9 @@ public class SaveFile {
         if (window instanceof Stage) {
             ((Stage) window).close();
         }
+        File file = new File("savegame.dat");
+        file.delete();
+        SpaceInvaders.getInstance().resumeGame();
     }
 
     public static void encrypt(String key, String inputFile, String outputFile) throws Exception {
