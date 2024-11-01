@@ -1,27 +1,11 @@
 package com.spaceinvaders.spaceinvaders;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import javax.crypto.*;
-import javax.crypto.spec.SecretKeySpec;
-
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.nio.file.Files;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.CipherOutputStream;
-import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 public class menu {
 
@@ -29,14 +13,10 @@ public class menu {
         System.exit(0);
     }
 
-
-
     public void continuee(ActionEvent event) {
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
-
-
 
     public void saveas(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("saveFile.fxml"));
@@ -54,7 +34,6 @@ public class menu {
         SpaceInvaders.getInstance().pauseGame();
 
     }
-
     public void loadas(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loadsave.fxml"));
         Stage stage = new Stage();
