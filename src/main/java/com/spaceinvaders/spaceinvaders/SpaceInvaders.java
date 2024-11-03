@@ -74,6 +74,8 @@ public class SpaceInvaders extends Application {
 
 	// Start
 	public void start(Stage stage) throws Exception {
+		HiloMusical hilo = new HiloMusical();
+		hilo.run();
 		Canvas canvas = new Canvas(WIDTH, HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));
@@ -98,6 +100,11 @@ public class SpaceInvaders extends Application {
 		scene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.SPACE) {
 				openMenu(stage);
+			}
+		});
+		scene.setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.P) {
+				hilo.playmusic2();
 			}
 		});
 	}
