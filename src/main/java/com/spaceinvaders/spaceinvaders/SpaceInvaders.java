@@ -102,11 +102,7 @@ public class SpaceInvaders extends Application {
 				openMenu(stage);
 			}
 		});
-		scene.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.P) {
-				hilo.playmusic2();
-			}
-		});
+
 	}
 	public void openMenu(Window stage) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
