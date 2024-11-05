@@ -27,14 +27,14 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class SpaceInvaders extends Application {
-	private static SpaceInvaders instance;
+	private static SpaceInvaders methods;
 
 	public SpaceInvaders() {
-		instance = this;
+		methods = this;
 	}
 
-	public static SpaceInvaders getInstance() {
-		return instance;
+	public static SpaceInvaders getMethods() {
+		return methods;
 	}
 	static final Random RAND = new Random();
 	static final int WIDTH = 800;

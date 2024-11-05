@@ -79,7 +79,7 @@ public class LoadSave {
         stage.close();
         File file = new File("decrypted.dat");
         file.delete();
-        SpaceInvaders.getInstance().resumeGame();
+        SpaceInvaders.getMethods().resumeGame();
     }
 
 

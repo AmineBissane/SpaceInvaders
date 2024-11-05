@@ -31,7 +31,7 @@ public class menu {
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
-        SpaceInvaders.getInstance().pauseGame();
+        SpaceInvaders.getMethods().pauseGame();
 
     }
     public void loadas(ActionEvent event) {
@@ -47,7 +47,7 @@ public class menu {
         stage.show();
         stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.close();
-        SpaceInvaders.getInstance().pauseGame();
+        SpaceInvaders.getMethods().pauseGame();
 
     }
 }

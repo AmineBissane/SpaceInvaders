@@ -50,7 +50,7 @@ public class SaveFile {
         }
         File file = new File("savegame.dat");
         file.delete();
-        SpaceInvaders.getInstance().resumeGame();
+        SpaceInvaders.getMethods().resumeGame();
     }
 
     public static void encrypt(String key, String inputFile, String outputFile) throws Exception {
