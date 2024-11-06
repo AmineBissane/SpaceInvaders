@@ -72,7 +72,7 @@ public class SpaceInvaders extends Application {
 	private double mouseX;
 
 	// Start
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage)  {
 		HiloMusical hilo = new HiloMusical();
 		hilo.run();
 		Canvas canvas = new Canvas(WIDTH, HEIGHT);
@@ -167,7 +167,6 @@ public class SpaceInvaders extends Application {
 
 
 
-	// Setupp the game, only executed once
 	private void setup() {
 		univ = new ArrayList<>();
 		shots = new ArrayList<>();
@@ -200,6 +199,7 @@ public class SpaceInvaders extends Application {
 		player.update();
 		player.draw();
 		player.posX = (int) mouseX;
+
 
 		Bombs.stream().peek(Rocket::update).peek(Rocket::draw).forEach(e -> {
 			if (player.colide(e) && !player.exploding) {
@@ -251,5 +251,24 @@ public class SpaceInvaders extends Application {
 
 	public static void main(String[] args) {
 		launch();
+	}
+
+	public List<Bomb> getBombs() {
+		return Bombs;
+	}
+
+	public List<Shot> getShots() {
+		return shots;
+	}
+	public void setBombs(List newBombs) {
+		this.Bombs = newBombs;
+	}
+
+	public void setShots(List newShots) {
+		this.shots = newShots;
+	}
+
+	public List<Universe> getUniverse() {
+		return univ;
 	}
 }

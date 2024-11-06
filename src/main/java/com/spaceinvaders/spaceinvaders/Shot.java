@@ -39,4 +39,5 @@ public class Shot implements Serializable {
         return distance  < rocket.size / 2 + size / 2;
     }
 
+
 }

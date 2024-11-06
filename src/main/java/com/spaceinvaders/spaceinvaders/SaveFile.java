@@ -13,19 +13,31 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.HEIGHT;
 
-public class SaveFile {
+public class SaveFile implements Serializable{
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES";
     String key = "1234567890123456";
     public TextField text;
     public void submitSaveName(ActionEvent event) {
         String filename = text.getText();
-        String dataToSave = player.score + "," + player.posX + "," + player.posY + "," +
-                player.size + "," + player.explosionStep + "," + player.imgIndex + "," + player.destroyed;
+        String rocketData = player.posX + ":" + player.posY + ":" + player.size + ":" + player.explosionStep + ":" +
+                player.imgIndex + ":" + player.destroyed + ":" + player.exploding;
+        String bombsData = SpaceInvaders.getMethods().getBombs().stream()
+                .map(bomb -> bomb.posX + ":" + bomb.posY + ":" + bomb.size + ":" + bomb.imgIndex)
+                .collect(Collectors.joining(";"));
+        String shotsData = SpaceInvaders.getMethods().getShots().stream()
+                .map(shot -> shot.posX + ":" + shot.posY + ":" + shot.speed)
+                .collect(Collectors.joining(";"));
+
+// Combine all data
+        String dataToSave = player.score + "," + rocketData + "," +
+                bombsData + "," + shotsData;
         if (filename.length()!=0){
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("savegame.dat"))) {

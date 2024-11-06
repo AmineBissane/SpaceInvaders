@@ -17,6 +17,11 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.HEIGHT;
@@ -70,21 +75,43 @@ public class LoadSave {
             String line = reader.readLine();
             String[] data = line.split(",");
             player.score = Integer.parseInt(data[0]);
-            player.posX = Integer.parseInt(data[1]);
-            player.posY = Integer.parseInt(data[2]);
-            player.size = Integer.parseInt(data[3]);
-            player.explosionStep = Integer.parseInt(data[4]);
-            player.imgIndex = Integer.parseInt(data[5]);
-            player.destroyed = Boolean.parseBoolean(data[6]);
+
+// Parse Rocket data
+            String[] rocketData = data[1].split(":");
+            Rocket rocket = new Rocket(Integer.parseInt(rocketData[0]), Integer.parseInt(rocketData[1]), Integer.parseInt(rocketData[2]));
+            rocket.explosionStep = Integer.parseInt(rocketData[3]);
+            rocket.imgIndex = Integer.parseInt(rocketData[4]);
+            rocket.destroyed = Boolean.parseBoolean(rocketData[5]);
+            rocket.exploding = Boolean.parseBoolean(rocketData[6]);
+            player = rocket;
+
+// Parse Bombs
+            List<Bomb> bombs = Arrays.stream(data[3].split(";"))
+                    .map(bombStr -> {
+                        String[] bombData = bombStr.split(":");
+                        return new Bomb(Integer.parseInt(bombData[0]), Integer.parseInt(bombData[1]),
+                                Integer.parseInt(bombData[2]), Integer.parseInt(bombData[3]));
+                    })
+                    .collect(Collectors.toList());
+            getMethods().setBombs(bombs);
+
+// Parse Shots
+            List<Shot> shots = Arrays.stream(data[4].split(";"))
+                    .map(shotStr -> {
+                        String[] shotData = shotStr.split(":");
+                        return new Shot(Integer.parseInt(shotData[0]), Integer.parseInt(shotData[1]));
+                    })
+                    .collect(Collectors.toList());
+            getMethods().setShots(shots);
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
         File file = new File("decrypted.dat");
         file.delete();
-        SpaceInvaders.getMethods().resumeGame();
+        getMethods().resumeGame();
         }
     }
 
@@ -126,5 +153,10 @@ public class LoadSave {
         }
     }
 
+    public void closeloadsavefile(ActionEvent event) {
+        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.close();
+        SpaceInvaders.getMethods().resumeGame();
+    }
 }
 

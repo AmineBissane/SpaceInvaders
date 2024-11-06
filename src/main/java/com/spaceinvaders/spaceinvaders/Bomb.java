@@ -29,4 +29,6 @@ public class Bomb extends Rocket implements Serializable {
             gc.drawImage(BOMBS_IMG[imgIndex], posX, posY, size, size);
         }
     }
+
+
 }
