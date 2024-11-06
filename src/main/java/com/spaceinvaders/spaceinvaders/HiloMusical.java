@@ -7,52 +7,75 @@ import java.io.IOException;
 
 public class HiloMusical implements Runnable {
 
+
+    private Clip currentMusic;
+    private Long clipPosition;
+
     @Override
     public void run() {
-        playmusic1();
+        playMusic1();
+        System.out.println("music Started");
     }
 
-    public void playmusic1(){
+    public void playMusic1() {
         String music1root = "src/Music/music2.wav";
 
-        {
-            try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(music1root).getAbsoluteFile());
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.addLineListener(event -> {
-                    if (event.getType() == LineEvent.Type.STOP) {
-                        clip.close();
-                        playmusic2();
-                    }
-                });
-                clip.start();
-
-            } catch (UnsupportedAudioFileException | IOException e) {
-                throw new RuntimeException(e);
-            } catch (LineUnavailableException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-    public void playmusic2() {
-        String music2root = "src/Music/music1.wav";
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(music2root).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.addLineListener(event -> {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(music1root).getAbsoluteFile());
+            currentMusic = AudioSystem.getClip();
+            currentMusic.open(audioInputStream);
+            currentMusic.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
-                    clip.close();
-                    playmusic1();
+                    currentMusic.close();
+                    playMusic2();
                 }
             });
-
-            clip.start();
-            clip.start();
+            currentMusic.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
+    }
 
+    public void playMusic2() {
+        String music2root = "src/Music/music1.wav";
+
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(music2root).getAbsoluteFile());
+            currentMusic = AudioSystem.getClip();
+            currentMusic.open(audioInputStream);
+            currentMusic.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    currentMusic.close();
+                    playMusic1();
+                }
+            });
+            currentMusic.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void pauseMusic() {
+        if (currentMusic != null && currentMusic.isRunning()) {
+            clipPosition = currentMusic.getMicrosecondPosition();
+            currentMusic.stop();
+            System.out.println("musica paused");
+        }
+    }
+
+    public void resumeMusic() {
+        if (currentMusic != null && clipPosition != null) {
+            currentMusic.setMicrosecondPosition(clipPosition);
+            currentMusic.start();
+            System.out.println("musica resumed");
+        }
+    }
+
+    public Clip getCurrentMusic() {
+        return currentMusic;
+    }
+
+    public Long getClipPosition() {
+        return clipPosition;
     }
 }

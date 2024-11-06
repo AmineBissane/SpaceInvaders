@@ -8,7 +8,8 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <Label text="Save as :" />
-   <TextField fx:id="text" />
+    <Label style="-fx-text-fill: white;" text="Save as :" />
+    <TextField fx:id="text" />
     <Button mnemonicParsing="false" onAction="#submitSaveName" text="submit" />
+   <Button mnemonicParsing="false" text="close" onAction="#closesavemenu" />
 </VBox>

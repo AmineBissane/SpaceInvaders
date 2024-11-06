@@ -41,20 +41,25 @@ public class LoadSave {
         if (directory.exists() && directory.isDirectory()) {
             File[] files = directory.listFiles();
             if (files != null) {
+                int count = 0;
                 for (File file : files) {
                     if (file.isFile() && file.getName().endsWith(".dat")) {
-                        listView.getItems().add(file.getName());
+                        if (count < 5) {
+                            listView.getItems().add(file.getName());
+                            count++;
+                        } else {
+                            break;
+                        }
                     }
                 }
             }
-        } else {
-            System.out.println("Directory does not exist or is not a directory.");
         }
     }
 
     @FXML
     public void loadsavefile(ActionEvent event) {
         String selectedFile = listView.getSelectionModel().getSelectedItem();
+        if (selectedFile!=null){
         try {
             decrypt(key, "src/saves/"+selectedFile, "decrypted.dat");
         } catch (Exception e) {
@@ -80,6 +85,7 @@ public class LoadSave {
         File file = new File("decrypted.dat");
         file.delete();
         SpaceInvaders.getMethods().resumeGame();
+        }
     }
 
 

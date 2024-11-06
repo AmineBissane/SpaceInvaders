@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.io.*;
 
 public class menu {
@@ -22,15 +24,20 @@ public class menu {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("saveFile.fxml"));
         Stage stage = new Stage();
         try {
-            stage.setScene(new Scene(loader.load()));
+            Scene scene = new Scene(loader.load());
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        stage.setTitle("save as :");
-        stage.show();
 
+        stage.setTitle("Save as :");
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.show();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+
         SpaceInvaders.getMethods().pauseGame();
 
     }
@@ -38,15 +45,20 @@ public class menu {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loadsave.fxml"));
         Stage stage = new Stage();
         try {
-            stage.setScene(new Scene(loader.load()));
+            Scene scene = new Scene(loader.load());
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            stage.setScene(scene);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        stage.setTitle("load saves !");
+        stage.setTitle("Load Saves");
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
-        stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+
         SpaceInvaders.getMethods().pauseGame();
 
     }

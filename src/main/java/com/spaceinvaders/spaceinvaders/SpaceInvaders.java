@@ -32,7 +32,6 @@ public class SpaceInvaders extends Application {
 	public SpaceInvaders() {
 		methods = this;
 	}
-
 	public static SpaceInvaders getMethods() {
 		return methods;
 	}
@@ -97,13 +96,45 @@ public class SpaceInvaders extends Application {
 		stage.setTitle("Space Invaders");
 		stage.show();
 
+
+
+
 		scene.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.SPACE) {
+			if (event.getCode() == KeyCode.P) {
+				pauseGame();
+				hilo.pauseMusic();
+			} else if (event.getCode() == KeyCode.O) {
+				resumeGame();
+				hilo.resumeMusic();
+			}else if (event.getCode() == KeyCode.SPACE) {
 				openMenu(stage);
+			}else if (event.getCode() == KeyCode.ESCAPE) {
+				openMenuMusic(stage);
 			}
 		});
 
+
 	}
+	public void openMenuMusic(Window stage) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("musicmenu.fxml"));
+		Stage menuStage = new Stage();
+		Scene scene = null;
+		try {
+			scene = new Scene(loader.load());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		scene.setFill(Color.TRANSPARENT);
+		menuStage.setScene(scene);
+		menuStage.initStyle(StageStyle.TRANSPARENT);
+		menuStage.setTitle("Music Menu");
+		menuStage.setWidth(820);
+		menuStage.setHeight(640);
+		pauseGame();
+		menuStage.setOnHidden(e -> resumeGame());
+		menuStage.show();
+	}
+
 	public void openMenu(Window stage) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
 		Stage menuStage = new Stage();
@@ -133,9 +164,6 @@ public class SpaceInvaders extends Application {
 		isGamePaused = false;
 		System.out.println("Game resumed.");
 	}
-
-
-
 
 
 

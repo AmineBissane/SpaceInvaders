@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="262.0" prefWidth="207.0" spacing="20.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spaceinvaders.spaceinvaders.MusicMenu">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label text="Music Menu :" style="-fx-text-fill: white;" />
+   <CheckBox mnemonicParsing="false" text="ON / OFF" fx:id="checkbox1" onAction="#checkbox1Changed" style="-fx-text-fill: white;"/>
+    <Button mnemonicParsing="false" onAction="#close" text="close"  />
+</VBox>

@@ -26,6 +26,7 @@ public class SaveFile {
         String filename = text.getText();
         String dataToSave = player.score + "," + player.posX + "," + player.posY + "," +
                 player.size + "," + player.explosionStep + "," + player.imgIndex + "," + player.destroyed;
+        if (filename.length()!=0){
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("savegame.dat"))) {
             writer.write(dataToSave);
@@ -51,6 +52,7 @@ public class SaveFile {
         File file = new File("savegame.dat");
         file.delete();
         SpaceInvaders.getMethods().resumeGame();
+        }
     }
 
     public static void encrypt(String key, String inputFile, String outputFile) throws Exception {
@@ -81,5 +83,11 @@ public class SaveFile {
         } else {
             System.out.println("Output file is empty or not created.");
         }
+    }
+
+    public void closesavemenu(ActionEvent event) {
+        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.close();
+        SpaceInvaders.getMethods().resumeGame();
     }
 }
