@@ -65,53 +65,41 @@ public class LoadSave {
     public void loadsavefile(ActionEvent event) {
         String selectedFile = listView.getSelectionModel().getSelectedItem();
         if (selectedFile!=null){
-        try {
-            decrypt(key, "src/saves/"+selectedFile, "decrypted.dat");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("decrypted.dat"));
-            String line = reader.readLine();
-            String[] data = line.split(",");
-            player.score = Integer.parseInt(data[0]);
-
-// Parse Rocket data
-            String[] rocketData = data[1].split(":");
-            Rocket rocket = new Rocket(Integer.parseInt(rocketData[0]), Integer.parseInt(rocketData[1]), Integer.parseInt(rocketData[2]));
-            rocket.explosionStep = Integer.parseInt(rocketData[3]);
-            rocket.imgIndex = Integer.parseInt(rocketData[4]);
-            rocket.destroyed = Boolean.parseBoolean(rocketData[5]);
-            rocket.exploding = Boolean.parseBoolean(rocketData[6]);
-            player = rocket;
-
-// Parse Bombs
-            List<Bomb> bombs = Arrays.stream(data[3].split(";"))
-                    .map(bombStr -> {
-                        String[] bombData = bombStr.split(":");
-                        return new Bomb(Integer.parseInt(bombData[0]), Integer.parseInt(bombData[1]),
-                                Integer.parseInt(bombData[2]), Integer.parseInt(bombData[3]));
-                    })
-                    .collect(Collectors.toList());
-            getMethods().setBombs(bombs);
-
-// Parse Shots
-            List<Shot> shots = Arrays.stream(data[4].split(";"))
-                    .map(shotStr -> {
-                        String[] shotData = shotStr.split(":");
-                        return new Shot(Integer.parseInt(shotData[0]), Integer.parseInt(shotData[1]));
-                    })
-                    .collect(Collectors.toList());
-            getMethods().setShots(shots);
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-        File file = new File("decrypted.dat");
-        file.delete();
-        getMethods().resumeGame();
+            try {
+                decrypt(key, "src/saves/"+selectedFile, "decrypted.dat");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("decrypted.dat"));
+                String line = reader.readLine();
+                String[] data = line.split(",");
+                player.score = Integer.parseInt(data[0]);
+                player.posX = Integer.parseInt(data[1]);
+                List<Bomb> bombs = Arrays.stream(data[7].split(";"))
+                        .map(bombStr -> {
+                            String[] bombData = bombStr.split(":");
+                            return new Bomb(Integer.parseInt(bombData[0]), Integer.parseInt(bombData[1]),
+                                    Integer.parseInt(bombData[2]), Integer.parseInt(bombData[3]));
+                        })
+                        .collect(Collectors.toList());
+                getMethods().setBombs(bombs);
+                List<Shot> shots = Arrays.stream(data[8].split(";"))
+                        .map(shotStr -> {
+                            String[] shotData = shotStr.split(":");
+                            return new Shot(Integer.parseInt(shotData[0]), Integer.parseInt(shotData[1]));
+                        })
+                        .collect(Collectors.toList());
+                getMethods().setShots(shots);
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+            File file = new File("decrypted.dat");
+            file.delete();
+            getMethods().resumeGame();
         }
     }
 
@@ -159,4 +147,3 @@ public class LoadSave {
         SpaceInvaders.getMethods().resumeGame();
     }
 }
-

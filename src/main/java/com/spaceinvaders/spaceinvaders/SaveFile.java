@@ -26,17 +26,14 @@ public class SaveFile implements Serializable{
     public TextField text;
     public void submitSaveName(ActionEvent event) {
         String filename = text.getText();
-        String rocketData = player.posX + ":" + player.posY + ":" + player.size + ":" + player.explosionStep + ":" +
-                player.imgIndex + ":" + player.destroyed + ":" + player.exploding;
         String bombsData = SpaceInvaders.getMethods().getBombs().stream()
                 .map(bomb -> bomb.posX + ":" + bomb.posY + ":" + bomb.size + ":" + bomb.imgIndex)
                 .collect(Collectors.joining(";"));
         String shotsData = SpaceInvaders.getMethods().getShots().stream()
                 .map(shot -> shot.posX + ":" + shot.posY + ":" + shot.speed)
                 .collect(Collectors.joining(";"));
-
-// Combine all data
-        String dataToSave = player.score + "," + rocketData + "," +
+        String dataToSave = player.score + "," + player.posX + "," + player.posY + "," +
+                player.size + "," + player.explosionStep + "," + player.imgIndex + "," + player.destroyed + "," +
                 bombsData + "," + shotsData;
         if (filename.length()!=0){
 
