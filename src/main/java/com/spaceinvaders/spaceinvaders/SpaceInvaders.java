@@ -21,6 +21,7 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -95,10 +96,6 @@ public class SpaceInvaders extends Application {
 		stage.setScene(scene);
 		stage.setTitle("Space Invaders");
 		stage.show();
-
-
-
-
 		scene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.P) {
 				pauseGame();
@@ -108,61 +105,20 @@ public class SpaceInvaders extends Application {
 				hilo.resumeMusic();
 			}else if (event.getCode() == KeyCode.SPACE) {
 				openMenu(stage);
-			}else if (event.getCode() == KeyCode.ESCAPE) {
-				openMenuMusic(stage);
 			}
 		});
 
 
 	}
-	public void openMenuMusic(Window stage) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("musicmenu.fxml"));
-		Stage menuStage = new Stage();
-		Scene scene = null;
-		try {
-			scene = new Scene(loader.load());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		scene.setFill(Color.TRANSPARENT);
-		menuStage.setScene(scene);
-		menuStage.initStyle(StageStyle.TRANSPARENT);
-		menuStage.setTitle("Music Menu");
-		menuStage.setWidth(820);
-		menuStage.setHeight(640);
-		pauseGame();
-		menuStage.setOnHidden(e -> resumeGame());
-		menuStage.show();
-	}
-
-	public void openMenu(Window stage) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
-		Stage menuStage = new Stage();
-		Scene scene = null;
-		try {
-			scene = new Scene(loader.load());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		scene.setFill(Color.TRANSPARENT);
-		menuStage.setScene(scene);
-		menuStage.initStyle(StageStyle.TRANSPARENT);
-		menuStage.setTitle("Game Menu");
-		menuStage.setWidth(820);
-		menuStage.setHeight(640);
-		pauseGame();
-		menuStage.setOnHidden(e -> resumeGame());
-		menuStage.show();
-	}
 
 	public void pauseGame() {
 		isGamePaused = true;
-		System.out.println("Game paused");
+		System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Game paused");
 	}
 
 	public void resumeGame() {
 		isGamePaused = false;
-		System.out.println("Game resumed.");
+		System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Game resumed.");
 	}
 
 
@@ -270,5 +226,26 @@ public class SpaceInvaders extends Application {
 
 	public List<Universe> getUniverse() {
 		return univ;
+	}
+
+
+	public void openMenu(Window stage) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
+		Stage menuStage = new Stage();
+		Scene scene = null;
+		try {
+			scene = new Scene(loader.load());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		scene.setFill(Color.TRANSPARENT);
+		menuStage.setScene(scene);
+		menuStage.initStyle(StageStyle.TRANSPARENT);
+		menuStage.setTitle("Game Menu");
+		menuStage.setWidth(820);
+		menuStage.setHeight(640);
+		pauseGame();
+		menuStage.setOnHidden(e -> resumeGame());
+		menuStage.show();
 	}
 }

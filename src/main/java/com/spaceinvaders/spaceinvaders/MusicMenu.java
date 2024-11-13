@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 
+import java.time.Instant;
+
 public class MusicMenu {
     HiloMusical hiloMusical = new HiloMusical();
     @FXML
@@ -19,10 +21,10 @@ public class MusicMenu {
     public void checkbox1Changed(ActionEvent event) {
         if (checkbox1.isSelected()){
             hiloMusical.pauseMusic();
-            System.out.println("music is paused");
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"music is paused");
         } else {
             hiloMusical.resumeMusic();
-            System.out.println("music is resumed");
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"music is resumed");
         }
     }
 

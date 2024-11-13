@@ -3,6 +3,7 @@ package com.spaceinvaders.spaceinvaders;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 
 
 public class HiloMusical implements Runnable {
@@ -14,7 +15,7 @@ public class HiloMusical implements Runnable {
     @Override
     public void run() {
         playMusic1();
-        System.out.println("music Started");
+        System.out.println("Logs [ "+ Instant.now()   +" ] :"+"music Started");
     }
 
     public void playMusic1() {
@@ -59,7 +60,7 @@ public class HiloMusical implements Runnable {
         if (currentMusic != null && currentMusic.isRunning()) {
             clipPosition = currentMusic.getMicrosecondPosition();
             currentMusic.stop();
-            System.out.println("musica paused");
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"musica paused");
         }
     }
 
@@ -67,7 +68,7 @@ public class HiloMusical implements Runnable {
         if (currentMusic != null && clipPosition != null) {
             currentMusic.setMicrosecondPosition(clipPosition);
             currentMusic.start();
-            System.out.println("musica resumed");
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"musica resumed");
         }
     }
 

@@ -13,6 +13,7 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +40,9 @@ public class SaveFile implements Serializable{
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("savegame.dat"))) {
             writer.write(dataToSave);
-            System.out.println("Data written to savegame.dat: " + dataToSave);
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Data written to savegame.dat: " + dataToSave);
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Error writing to file: " + e.getMessage());
             e.printStackTrace();
             return;
         }
@@ -66,7 +67,7 @@ public class SaveFile implements Serializable{
 
     public static void encrypt(String key, String inputFile, String outputFile) throws Exception {
         doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
-        System.out.println("File encrypted successfully: " + outputFile);
+        System.out.println("Logs [ "+ Instant.now()   +" ] :"+"File encrypted successfully: " + outputFile);
     }
 
     private static void doCrypto(int cipherMode, String key, String inputFile, String outputFile) throws Exception {
@@ -88,9 +89,9 @@ public class SaveFile implements Serializable{
 
         File outFile = new File(outputFile);
         if (outFile.exists() && outFile.length() > 0) {
-            System.out.println("Output file size after " + (cipherMode == Cipher.ENCRYPT_MODE ? "encryption" : "decryption") + ": " + outFile.length());
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Output file size after " + (cipherMode == Cipher.ENCRYPT_MODE ? "encryption" : "decryption") + ": " + outFile.length());
         } else {
-            System.out.println("Output file is empty or not created.");
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Output file is empty or not created.");
         }
     }
 

@@ -9,6 +9,7 @@
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
   <Button onAction="#continuee" text="continue" />
+   <Button mnemonicParsing="false" onAction="#music" text="music" />
    <Button mnemonicParsing="false" onAction="#saveas" text="save" />
    <Button mnemonicParsing="false" onAction="#loadas" text="LoadSave" />
    <Button mnemonicParsing="false" onAction="#close" text="    close   " />
