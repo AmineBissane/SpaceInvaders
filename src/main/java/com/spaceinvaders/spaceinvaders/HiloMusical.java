@@ -31,7 +31,7 @@ public class HiloMusical implements Runnable {
                 }
             });
             currentMusic.start();
-            isPaused = false;  // Music is playing, so it's not paused
+            isPaused = false;  
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class HiloMusical implements Runnable {
                 }
             });
             currentMusic.start();
-            isPaused = false;  // Music is playing, so it's not paused
+            isPaused = false;
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class HiloMusical implements Runnable {
         if (currentMusic != null && clipPosition != null && isPaused) {
             currentMusic.setMicrosecondPosition(clipPosition);
             currentMusic.start();
-            isPaused = false; 
+            isPaused = false;
             System.out.println("Logs [ " + Instant.now() + " ] : music resumed from position " + clipPosition);
         } else {
             System.out.println("Logs [ " + Instant.now() + " ] : No music to resume or it wasn't paused.");
