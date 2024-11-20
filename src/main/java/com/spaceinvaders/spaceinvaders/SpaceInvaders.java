@@ -20,6 +20,8 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -72,10 +74,17 @@ public class SpaceInvaders extends Application {
 
 	private double mouseX;
 
-	// Start
-	public void start(Stage stage)  {
-		HiloMusical hilo = new HiloMusical();
+	public void start(Stage stage) throws IOException {
+		HiloMusical hilo = HiloMusical.getInstance();
 		hilo.run();
+		BufferedReader reader = new BufferedReader(new FileReader("src/musicsave/musicsave.dat"));
+		String line = reader.readLine();
+		if (line!=null && line.equals("true")) {
+			hilo.resumeMusic();
+		} else {
+			hilo.pauseMusic();
+		}
+		reader.close();
 		Canvas canvas = new Canvas(WIDTH, HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));

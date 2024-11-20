@@ -6,10 +6,19 @@ import java.io.IOException;
 import java.time.Instant;
 
 public class HiloMusical implements Runnable {
-
+    private static HiloMusical instance;
     private Clip currentMusic;
     private Long clipPosition;
-    private boolean isPaused = false;  // Track if music is paused
+    private boolean isPaused = false;
+    private boolean isManuallyPaused = false;
+    private HiloMusical() {}
+
+    public static synchronized HiloMusical getInstance() {
+        if (instance == null) {
+            instance = new HiloMusical();
+        }
+        return instance;
+    }
 
     @Override
     public void run() {
@@ -25,13 +34,13 @@ public class HiloMusical implements Runnable {
             currentMusic = AudioSystem.getClip();
             currentMusic.open(audioInputStream);
             currentMusic.addLineListener(event -> {
-                if (event.getType() == LineEvent.Type.STOP) {
+                if (event.getType() == LineEvent.Type.STOP && !isManuallyPaused) {
                     currentMusic.close();
                     playMusic2();
                 }
             });
             currentMusic.start();
-            isPaused = false;  
+            isPaused = false;
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
@@ -45,7 +54,7 @@ public class HiloMusical implements Runnable {
             currentMusic = AudioSystem.getClip();
             currentMusic.open(audioInputStream);
             currentMusic.addLineListener(event -> {
-                if (event.getType() == LineEvent.Type.STOP) {
+                if (event.getType() == LineEvent.Type.STOP && !isManuallyPaused) {
                     currentMusic.close();
                     playMusic1();
                 }
@@ -57,17 +66,21 @@ public class HiloMusical implements Runnable {
         }
     }
 
-    public void pauseMusic() {
+    public synchronized void pauseMusic() {
         if (currentMusic != null && currentMusic.isRunning()) {
             clipPosition = currentMusic.getMicrosecondPosition();
+            isManuallyPaused = true;
             currentMusic.stop();
             isPaused = true;
             System.out.println("Logs [ " + Instant.now() + " ] : music paused at position " + clipPosition);
+        } else {
+            System.out.println("Logs [ " + Instant.now() + " ] : No music is playing to pause.");
         }
     }
 
-    public void resumeMusic() {
+    public synchronized void resumeMusic() {
         if (currentMusic != null && clipPosition != null && isPaused) {
+            isManuallyPaused = false;
             currentMusic.setMicrosecondPosition(clipPosition);
             currentMusic.start();
             isPaused = false;
