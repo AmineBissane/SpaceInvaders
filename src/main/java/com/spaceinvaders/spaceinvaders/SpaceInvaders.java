@@ -77,14 +77,6 @@ public class SpaceInvaders extends Application {
 	public void start(Stage stage) throws IOException {
 		HiloMusical hilo = HiloMusical.getInstance();
 		hilo.run();
-		BufferedReader reader = new BufferedReader(new FileReader("src/musicsave/musicsave.dat"));
-		String line = reader.readLine();
-		if (line!=null && line.equals("true")) {
-			hilo.resumeMusic();
-		} else {
-			hilo.pauseMusic();
-		}
-		reader.close();
 		Canvas canvas = new Canvas(WIDTH, HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));
@@ -116,8 +108,14 @@ public class SpaceInvaders extends Application {
 				openMenu(stage);
 			}
 		});
-
-
+		BufferedReader reader = new BufferedReader(new FileReader("src/musicsave/musicsave.dat"));
+		String line = reader.readLine();
+		if (line!=null && line.equals("true")) {
+			hilo.resumeMusic();
+		} else {
+			hilo.pauseMusic();
+		}
+		reader.close();
 	}
 
 	public void pauseGame() {
