@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox alignment="CENTER" prefHeight="262.0" prefWidth="207.0" spacing="20.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spaceinvaders.spaceinvaders.LoadSave">
@@ -11,5 +12,5 @@
     <Label style="-fx-text-fill: white;" text="Previous Saves" />
     <ListView fx:id="listView" prefHeight="116.0" prefWidth="167.0" style="-fx-text-fill: white;" />
     <Button mnemonicParsing="false" onAction="#loadsavefile" text="load" />
-   <Button mnemonicParsing="false" onAction="#closeloadsavefile" text="close" />
+    <Button mnemonicParsing="false" onAction="#closeloadsavefile" text="close" />
 </VBox>

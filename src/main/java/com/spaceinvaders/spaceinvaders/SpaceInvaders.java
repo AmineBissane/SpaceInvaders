@@ -3,12 +3,14 @@ package com.spaceinvaders.spaceinvaders;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -20,7 +22,9 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
+import javax.imageio.ImageIO;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.Instant;
@@ -30,6 +34,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class SpaceInvaders extends Application {
+	private static Stage mainStage;
 	private static SpaceInvaders methods;
 
 	public SpaceInvaders() {
@@ -75,6 +80,7 @@ public class SpaceInvaders extends Application {
 	private double mouseX;
 
 	public void start(Stage stage) throws IOException {
+		mainStage = stage;
 		HiloMusical hilo = HiloMusical.getInstance();
 		hilo.run();
 		Canvas canvas = new Canvas(WIDTH, HEIGHT);
@@ -254,5 +260,25 @@ public class SpaceInvaders extends Application {
 		pauseGame();
 		menuStage.setOnHidden(e -> resumeGame());
 		menuStage.show();
+	}
+	public static Stage getMainStage() {
+		return mainStage;
+	}
+	public void takeMainPageScreenshot(String nombre) {
+		try {
+			// Get the main stage
+			Stage mainStage = SpaceInvaders.getMainStage();
+
+			// Capture a snapshot of the main scene
+			WritableImage image = mainStage.getScene().snapshot(null);
+
+			// Save the snapshot as a PNG file
+			File file = new File("src/miniatures/"+nombre+".png");
+			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+
+			System.out.println("Main page screenshot saved: " + file.getAbsolutePath());
+		} catch (IOException ex) {
+			System.err.println("Error saving the main page screenshot: " + ex.getMessage());
+		}
 	}
 }

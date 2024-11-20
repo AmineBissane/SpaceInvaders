@@ -1,13 +1,17 @@
 package com.spaceinvaders.spaceinvaders;
 
 import javafx.event.ActionEvent;
+import javafx.embed.swing.SwingFXUtils;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.imageio.ImageIO;
 import java.io.*;
 import java.time.Instant;
 
@@ -25,6 +29,7 @@ public class menu {
     public void saveas(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("saveFile.fxml"));
         Stage stage = new Stage();
+       ;
         try {
             Scene scene = new Scene(loader.load());
             scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
@@ -91,7 +96,5 @@ public class menu {
 
         SpaceInvaders.getMethods().pauseGame();
     }
-
-
 }
 

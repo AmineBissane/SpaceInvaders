@@ -3,13 +3,25 @@ package com.spaceinvaders.spaceinvaders;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.geometry.Pos;
+import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import javafx.event.ActionEvent;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -32,7 +44,7 @@ public class LoadSave {
     private static final String TRANSFORMATION = "AES";
     String key = "1234567890123456";
     @FXML
-    public ListView<String> listView;
+    public ListView<HBox> listView;
 
     @FXML
     public Button loadButton;
@@ -43,18 +55,43 @@ public class LoadSave {
     }
 
     private void loadFileNames() {
-        File directory = new File("src/saves/");
-        if (directory.exists() && directory.isDirectory()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
+        File saveDirectory = new File("src/saves/");
+        File miniatureDirectory = new File("src/miniatures/");
+
+        if (saveDirectory.exists() && saveDirectory.isDirectory() && miniatureDirectory.exists() && miniatureDirectory.isDirectory()) {
+            File[] saveFiles = saveDirectory.listFiles();
+            if (saveFiles != null) {
                 int count = 0;
-                for (File file : files) {
-                    if (file.isFile() && file.getName().endsWith(".dat")) {
-                        if (count < 5) {
-                            listView.getItems().add(file.getName());
-                            count++;
-                        } else {
-                            break;
+                for (File saveFile : saveFiles) {
+                    if (saveFile.isFile() && saveFile.getName().endsWith(".dat")) {
+                        String baseName = saveFile.getName().substring(0, saveFile.getName().lastIndexOf('.'));
+                        File correspondingImage = new File(miniatureDirectory, baseName + ".png");
+
+                        if (correspondingImage.exists()) {
+                            if (count < 5) {
+                                Image image = new Image(correspondingImage.toURI().toString());
+                                ImageView imageView = new ImageView(image);
+                                imageView.setFitWidth(50);
+                                imageView.setFitHeight(50);
+                                HBox hbox = new HBox(10, imageView, new javafx.scene.control.Label(saveFile.getName()));
+                                hbox.setAlignment(Pos.CENTER_LEFT);
+
+                                listView.setCellFactory(param -> new ListCell<HBox>() {
+                                    @Override
+                                    protected void updateItem(HBox item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty || item == null) {
+                                            setGraphic(null);
+                                        } else {
+                                            setGraphic(item);
+                                        }
+                                    }
+                                });
+                                listView.getItems().add(hbox);
+                                count++;
+                            } else {
+                                break;
+                            }
                         }
                     }
                 }
@@ -62,15 +99,20 @@ public class LoadSave {
         }
     }
 
+
+
+
     @FXML
     public void loadsavefile(ActionEvent event) {
-        String selectedFile = listView.getSelectionModel().getSelectedItem();
-        if (selectedFile!=null){
+        HBox selectedItem = listView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            String filename = ((javafx.scene.control.Label)selectedItem.getChildren().get(1)).getText();
             try {
-                decrypt(key, "src/saves/"+selectedFile, "decrypted.dat");
+                decrypt(key, "src/saves/" + filename, "decrypted.dat");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
             try {
                 BufferedReader reader = new BufferedReader(new FileReader("decrypted.dat"));
                 String line = reader.readLine();
@@ -96,13 +138,18 @@ public class LoadSave {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
+
             File file = new File("decrypted.dat");
             file.delete();
+
             getMethods().resumeGame();
         }
     }
+
+
 
 
     public static void decrypt(String key, String inputFile, String outputFile) throws Exception {

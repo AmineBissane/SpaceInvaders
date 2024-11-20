@@ -62,6 +62,7 @@ public class SaveFile implements Serializable{
         File file = new File("savegame.dat");
         file.delete();
         SpaceInvaders.getMethods().resumeGame();
+        SpaceInvaders.getMethods().takeMainPageScreenshot(filename);
         }
     }
 
