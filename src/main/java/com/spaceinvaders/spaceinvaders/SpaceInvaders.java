@@ -147,6 +147,8 @@ public class SpaceInvaders extends Application {
 
 	private void run(GraphicsContext gc) {
 		if (isGamePaused) {
+			gc.setFont(Font.font(35));
+			gc.fillText("Game paused", WIDTH / 2, HEIGHT / 3.7);
 			return;
 		}
 
@@ -258,6 +260,7 @@ public class SpaceInvaders extends Application {
 		menuStage.setWidth(820);
 		menuStage.setHeight(640);
 		pauseGame();
+		menuStage.setAlwaysOnTop(true);
 		menuStage.setOnHidden(e -> resumeGame());
 		menuStage.show();
 	}
@@ -266,16 +269,10 @@ public class SpaceInvaders extends Application {
 	}
 	public void takeMainPageScreenshot(String nombre) {
 		try {
-			// Get the main stage
 			Stage mainStage = SpaceInvaders.getMainStage();
-
-			// Capture a snapshot of the main scene
 			WritableImage image = mainStage.getScene().snapshot(null);
-
-			// Save the snapshot as a PNG file
 			File file = new File("src/miniatures/"+nombre+".png");
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-
 			System.out.println("Main page screenshot saved: " + file.getAbsolutePath());
 		} catch (IOException ex) {
 			System.err.println("Error saving the main page screenshot: " + ex.getMessage());

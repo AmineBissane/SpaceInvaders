@@ -41,6 +41,7 @@ public class menu {
 
         stage.setTitle("Save as :");
         stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setAlwaysOnTop(true);
         stage.show();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
@@ -63,6 +64,7 @@ public class menu {
 
         stage.setTitle("Load Saves");
         stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setAlwaysOnTop(true);
         stage.show();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
@@ -87,6 +89,7 @@ public class menu {
 
         stage.setTitle("Load Saves");
         stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setAlwaysOnTop(true);
         stage.setOnHidden(e -> SpaceInvaders.getMethods().resumeGame());
         stage.show();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
