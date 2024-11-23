@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -114,6 +115,11 @@ public class SpaceInvaders extends Application {
 				openMenu(stage);
 			}
 		});
+		scene.setOnMouseClicked(event -> {
+			if (event.getButton() == MouseButton.PRIMARY) {
+				SoundEffects.getInstance().shotsound();
+			}
+		});
 		BufferedReader reader = new BufferedReader(new FileReader("src/musicsave/musicsave.dat"));
 		String line = reader.readLine();
 		if (line!=null && line.equals("true")) {
@@ -165,7 +171,6 @@ public class SpaceInvaders extends Application {
 			gc.fillText("Game Over \n Your Score is: " + player.score + " \n Click to play again", WIDTH / 2, HEIGHT / 2.5);
 			return;
 		}
-
 		univ.forEach(Universe::draw);
 		player.update();
 		player.draw();
@@ -175,6 +180,7 @@ public class SpaceInvaders extends Application {
 		Bombs.stream().peek(Rocket::update).peek(Rocket::draw).forEach(e -> {
 			if (player.colide(e) && !player.exploding) {
 				player.explode();
+				SoundEffects.getInstance().gameoversound();
 			}
 		});
 
@@ -189,6 +195,7 @@ public class SpaceInvaders extends Application {
 			for (Bomb bomb : Bombs) {
 				if (shot.colide(bomb) && !bomb.exploding) {
 					player.score++;
+					SoundEffects.getInstance().explosionsound();
 					bomb.explode();
 					shot.toRemove = true;
 				}
