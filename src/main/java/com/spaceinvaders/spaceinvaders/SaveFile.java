@@ -51,9 +51,6 @@ public class SaveFile implements Serializable{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        gc.setFont(Font.font(35));
-        gc.setFill(Color.YELLOW);
-        gc.fillText("Game Saved!", WIDTH / 2, HEIGHT / 2.5);
         Node source = (Node) event.getSource();
         Window window = source.getScene().getWindow();
         if (window instanceof Stage) {

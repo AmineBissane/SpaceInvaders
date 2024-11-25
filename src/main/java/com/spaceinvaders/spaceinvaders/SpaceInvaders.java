@@ -197,6 +197,7 @@ public class SpaceInvaders extends Application {
 					player.score++;
 					SoundEffects.getInstance().explosionsound();
 					bomb.explode();
+					SoundEffects.getInstance().explosionsound();
 					shot.toRemove = true;
 				}
 			}
@@ -280,7 +281,7 @@ public class SpaceInvaders extends Application {
 			WritableImage image = mainStage.getScene().snapshot(null);
 			File file = new File("src/miniatures/"+nombre+".png");
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-			System.out.println("Main page screenshot saved: " + file.getAbsolutePath());
+			System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Main page screenshot saved: " + file.getAbsolutePath());
 		} catch (IOException ex) {
 			System.err.println("Error saving the main page screenshot: " + ex.getMessage());
 		}
