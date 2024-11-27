@@ -111,7 +111,7 @@ public class SpaceInvaders extends Application {
 			} else if (event.getCode() == KeyCode.O) {
 				resumeGame();
 				hilo.resumeMusic();
-			}else if (event.getCode() == KeyCode.SPACE) {
+			}else if (event.getCode() == KeyCode.ESCAPE) {
 				openMenu(stage);
 			}
 		});
@@ -119,6 +119,13 @@ public class SpaceInvaders extends Application {
 			if (event.getButton() == MouseButton.PRIMARY) {
 				SoundEffects.getInstance().shotsound();
 			}
+		});
+
+
+		stage.setOnCloseRequest(event -> {
+			System.out.println("Logs [ "+ Instant.now()   +" ] :"+"music thread closed");
+			hilo.stopThread();
+
 		});
 		BufferedReader reader = new BufferedReader(new FileReader("src/musicsave/musicsave.dat"));
 		String line = reader.readLine();

@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 
-public class HiloMusical implements Runnable {
+public class HiloMusical extends Thread {
     private static HiloMusical instance;
     private Clip currentMusic;
     private Long clipPosition;
@@ -96,5 +96,9 @@ public class HiloMusical implements Runnable {
 
     public Long getClipPosition() {
         return clipPosition;
+    }
+    public void stopThread() {
+        pauseMusic();
+        this.interrupt();
     }
 }
