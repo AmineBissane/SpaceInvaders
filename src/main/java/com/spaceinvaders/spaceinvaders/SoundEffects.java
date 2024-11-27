@@ -3,6 +3,7 @@ package com.spaceinvaders.spaceinvaders;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
+import java.time.Instant;
 
 public class SoundEffects {
     public static SoundEffects instance;
@@ -14,9 +15,11 @@ public class SoundEffects {
     }
 
     public void explosionsound(){
+
         String filename = "src/Music/explosion.wav";
         try
         {
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"explosion sound activated");
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(new File(filename)));
             clip.start();
@@ -28,6 +31,7 @@ public class SoundEffects {
     }
     public void shotsound() {
         try {
+            System.out.println("Logs [ "+ Instant.now()   +" ] :"+"shot sound activated");
             String filename = "src/Music/shot.wav";
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(new File(filename)));
@@ -38,7 +42,7 @@ public class SoundEffects {
         }
     }
     public void gameoversound(){
-        System.out.println("over sound");
+        System.out.println("Logs [ "+ Instant.now()   +" ] :"+"Gameover sound activated");
         String filename = "src/Music/gameover.wav";
         try
         {
