@@ -30,13 +30,9 @@ public class SaveFile implements Serializable{
 
     public void submitSaveName(ActionEvent event) {
         String filename = text.getText();
-
-        // Create SaveData object
         List<Bomb> bombs = SpaceInvaders.getMethods().getBombs();
         List<Shot> shots = SpaceInvaders.getMethods().getShots();
         SaveData saveData = new SaveData(player, bombs, shots);
-
-        // Serialize SaveData object
         try (FileOutputStream fileOut = new FileOutputStream("savegame.dat");
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(saveData);
@@ -46,21 +42,20 @@ public class SaveFile implements Serializable{
             e.printStackTrace();
             return;
         }
-
-        // Encrypt the serialized file
         try {
             encrypt(key, "savegame.dat", "src/saves/" + filename + ".dat");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        // Optionally delete the original unencrypted file after encryption
+        Node source = (Node) event.getSource();
+        Window window = source.getScene().getWindow();
+        if (window instanceof Stage) {
+            ((Stage) window).close();
+        }
         File file = new File("savegame.dat");
         if (file.exists()) {
             file.delete();
         }
-
-        // Resume the game or show a confirmation
         SpaceInvaders.getMethods().resumeGame();
         SpaceInvaders.getMethods().takeMainPageScreenshot(filename);
     }

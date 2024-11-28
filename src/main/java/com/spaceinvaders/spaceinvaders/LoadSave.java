@@ -122,8 +122,6 @@ public class LoadSave implements Serializable{
 
                     if (readObject instanceof SaveData) {
                         SaveData saveData = (SaveData) readObject;
-
-                        // Restore the game state
                         player = new Rocket(saveData.posX, saveData.posY, saveData.size);
                         player.score = saveData.score;
                         player.explosionStep = saveData.explosionStep;
@@ -144,17 +142,14 @@ public class LoadSave implements Serializable{
                     return;
                 }
 
-                // Close the current window
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.close();
 
-                // Optionally, delete the decrypted file
                 File file = new File("decryptedd.dat");
                 if (file.exists()) {
                     file.delete();
                 }
 
-                // Resume the game
                 getMethods().resumeGame();
 
             } catch (Exception e) {
@@ -165,8 +160,7 @@ public class LoadSave implements Serializable{
     }
 
     private void showError(String message) {
-        // Implement a method to show a dialog or message to the user with the error.
-        System.err.println(message);  // Just printing to console for now
+        System.err.println(message);
     }
 
 
