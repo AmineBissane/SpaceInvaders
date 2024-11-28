@@ -6,9 +6,11 @@ import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 // Player
 public class Rocket implements Serializable {
+    private static final long serialVersionUID = 1L;
     int score;
     int posX, posY, size;
-    boolean exploding, destroyed;
+    boolean exploding;
+    boolean destroyed;
     int imgIndex;
     int explosionStep = 0;
 

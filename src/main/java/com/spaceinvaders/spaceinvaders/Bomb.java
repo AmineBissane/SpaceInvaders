@@ -6,6 +6,7 @@ import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 // Enemy
 public class Bomb extends Rocket implements Serializable {
+    private static final long serialVersionUID = 1L;
     int SPEED = (score/5)+2;
 
     public Bomb(int posX, int posY, int size, int imgIndex) {

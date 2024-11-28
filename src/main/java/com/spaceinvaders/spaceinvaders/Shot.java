@@ -8,6 +8,7 @@ import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 // Bullet
 public class Shot implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public boolean toRemove;
     int posX, posY, speed = 10;

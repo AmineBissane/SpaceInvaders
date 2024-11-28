@@ -8,6 +8,7 @@ import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 
 // Star
 public class Universe implements Serializable {
+    private static final long serialVersionUID = 1L;
     int posX, posY;
     private int h, w, r, g, b;
     private double opacity;

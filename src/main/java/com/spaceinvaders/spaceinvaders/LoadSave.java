@@ -1,6 +1,10 @@
 package com.spaceinvaders.spaceinvaders;
 
 import javafx.event.ActionEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
@@ -39,7 +43,7 @@ import java.util.stream.Collectors;
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.*;
 import static com.spaceinvaders.spaceinvaders.SpaceInvaders.HEIGHT;
 
-public class LoadSave {
+public class LoadSave implements Serializable{
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES";
     String key = "1234567890123456";
@@ -100,56 +104,70 @@ public class LoadSave {
     }
 
 
-
-
     @FXML
     public void loadsavefile(ActionEvent event) {
         HBox selectedItem = listView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            String filename = ((javafx.scene.control.Label)selectedItem.getChildren().get(1)).getText();
+            String filename = ((javafx.scene.control.Label) selectedItem.getChildren().get(1)).getText();
             try {
-                decrypt(key, "src/saves/" + filename, "decrypted.dat");
+                decrypt(key, "src/saves/" + filename, "decryptedd.dat");
+                try (FileInputStream fileIn = new FileInputStream("decryptedd.dat");
+                     ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+
+                    Object readObject = objectIn.readObject();
+
+                    // Detailed logging
+                    System.out.println("Deserialized object class: " + readObject.getClass());
+                    System.out.println("Is SaveData? " + (readObject instanceof SaveData));
+
+                    if (readObject instanceof SaveData) {
+                        SaveData saveData = (SaveData) readObject;
+
+                        // Restore the game state
+                        player = new Rocket(saveData.posX, saveData.posY, saveData.size);
+                        player.score = saveData.score;
+                        player.explosionStep = saveData.explosionStep;
+                        player.imgIndex = saveData.imgIndex;
+                        player.destroyed = saveData.destroyed;
+
+                        getMethods().setBombs(saveData.bombs);
+                        getMethods().setShots(saveData.shots);
+
+                        System.out.println("Game state successfully loaded");
+                    } else {
+                        System.out.println("Error: The deserialized object is not of type SaveData.");
+                        System.out.println("Actual object type: " + readObject.getClass());
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                    showError("Error loading save data: " + e.getMessage());
+                    return;
+                }
+
+                // Close the current window
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.close();
+
+                // Optionally, delete the decrypted file
+                File file = new File("decryptedd.dat");
+                if (file.exists()) {
+                    file.delete();
+                }
+
+                // Resume the game
+                getMethods().resumeGame();
+
             } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader("decrypted.dat"));
-                String line = reader.readLine();
-                String[] data = line.split(",");
-                player.score = Integer.parseInt(data[0]);
-                player.posX = Integer.parseInt(data[1]);
-                List<Bomb> bombs = Arrays.stream(data[7].split(";"))
-                        .map(bombStr -> {
-                            String[] bombData = bombStr.split(":");
-                            return new Bomb(Integer.parseInt(bombData[0]), Integer.parseInt(bombData[1]),
-                                    Integer.parseInt(bombData[2]), Integer.parseInt(bombData[3]));
-                        })
-                        .collect(Collectors.toList());
-                getMethods().setBombs(bombs);
-                List<Shot> shots = Arrays.stream(data[8].split(";"))
-                        .map(shotStr -> {
-                            String[] shotData = shotStr.split(":");
-                            return new Shot(Integer.parseInt(shotData[0]), Integer.parseInt(shotData[1]));
-                        })
-                        .collect(Collectors.toList());
-                getMethods().setShots(shots);
-                reader.close();
-            } catch (IOException e) {
                 e.printStackTrace();
+                showError("Error during file decryption: " + e.getMessage());
             }
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.close();
-
-            File file = new File("decrypted.dat");
-            file.delete();
-
-            getMethods().resumeGame();
         }
     }
 
-
+    private void showError(String message) {
+        // Implement a method to show a dialog or message to the user with the error.
+        System.err.println(message);  // Just printing to console for now
+    }
 
 
     public static void decrypt(String key, String inputFile, String outputFile) throws Exception {
